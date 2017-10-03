@@ -1,0 +1,28 @@
+# ========================================
+# operation tools
+# ========================================
+- name: install operation tools
+  yum: name={{ item }} state=latest
+  with_items:
+    - telnet
+    - wget
+    - rsync
+    - tree
+    - wireshark
+    - tcpdump
+    - sysstat
+    - dstat
+    - nmap
+    - expect
+    - net-tools
+    - bzip2
+    - nfs-utils
+    - lsof
+    - strace
+    - bind-utils
+    - net-snmp
+    - net-snmp-utils
+    - openssh-server
+    - openssh-client
+  when: ansible_os_family == "RedHat"
+  tags: operation_tools
