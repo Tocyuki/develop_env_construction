@@ -14,9 +14,12 @@ install_ansible(){
 }
 
 run_ansible_playbook(){
+  git clone https://github.com/Tocyuki/develop_env_construction.git $HOME/develop_env_construction
+  cd $HOME/develop_env_construction
   ansible-playbook -i localhost, -c local construction.yml
 }
 
-install_git
 update
+install_git
 install_ansible
+run_ansible_playbook
