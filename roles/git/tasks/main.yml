@@ -1,0 +1,42 @@
+# ========================================
+# Git
+# ========================================
+- name: install require modules for git.
+  when: ansible_os_family == "RedHat"
+  yum: name={{ item }} state=latest
+  with_items:
+    - git
+    - curl-devel
+    - expat-devel
+    - gettext-devel
+    - openssl-devel
+    - zlib-devel
+    - perl-ExtUtils-MakeMaker
+    - gcc
+    - make
+  tags: git
+
+- name: clone git of latest version.
+  git: repo={{ git_repo }} dest={{ src_dir }}/git version=master
+  tags: git
+
+- name: delete git of old version.
+  when: ansible_os_family == "RedHat"
+  yum: name=git state=absent
+  tags: git
+
+- name: check the installation status of git.
+  command: which git
+  ignore_errors: true
+  register: check_git
+  tags: git
+
+- name: execute make all.
+  when: check_git|failed
+  shell: chdir={{ src_dir }}/git make prefix=/usr/local all
+  tags: git
+
+- name: execute make install.
+  when: check_git|failed
+  shell: chdir={{ src_dir }}/git make prefix=/usr/local install
+  tags: git
