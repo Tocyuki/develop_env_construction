@@ -2,6 +2,7 @@
 # operation tools
 # ========================================
 - name: install operation tools
+  when: ansible_os_family == "RedHat"
   yum: name={{ item }} state=latest
   with_items:
     - telnet
@@ -23,6 +24,5 @@
     - net-snmp
     - net-snmp-utils
     - openssh-server
-    - openssh-client
-  when: ansible_os_family == "RedHat"
+    - openssh-clients
   tags: operation_tools
