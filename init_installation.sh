@@ -19,7 +19,12 @@ run_ansible_playbook(){
   ansible-playbook -i localhost, -c local construction.yml
 }
 
+delete_repo(){
+  rm -rf $HOME/develop_env_construction
+}
+
 update
 install_git
 install_ansible
 run_ansible_playbook
+delete_repo
