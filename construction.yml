@@ -2,3 +2,4 @@
   roles:
     - operation_tools
     - git
+    - vim

@@ -1,0 +1,55 @@
+# ========================================
+# Vim
+# ========================================
+- name: delete vim of old version
+  when: ansible_os_family == "RedHat"
+  yum: name=vim state=absent
+  tags: vim
+
+- name: check the installation status of vim
+  command: which vim
+  ignore_errors: true
+  register: check_vim
+  tags: vim
+
+- name: install require modules of vim
+  when: ansible_os_family == "RedHat"
+  yum: name={{ item }} state=present
+  with_items:
+    - ncurses-devel
+    - lua
+    - lua-devel
+    - gtk2-devel
+    - atk-devel
+    - libX11-devel
+    - libXt-devel
+  tags: vim
+
+- name: clone latest version of vim
+  git: repo={{ vim_repo }} dest={{ src_dir }}/vim version=master
+  tags: vim
+
+- name: execute configure
+  when: check_vim|failed
+  shell: chdir={{ src_dir }}/vim ./configure --with-features=huge --enable-multibyte --enable-luainterp=dynamic --enable-gpm --enable-cscope --enable-fontset
+  tags: vim
+
+- name: execute make
+  when: check_vim|failed
+  shell: chdir={{ src_dir }}/vim make
+  tags: vim
+
+- name: execute make install
+  when: check_vim|failed
+  shell: chdir={{ src_dir }}/vim make install
+  tags: vim
+
+- name: clone dotfiles
+  git: repo={{ dotfiles_repo }} dest=$HOME/dotfiles version=master
+  tags: vim
+
+- name: make symbolic link
+  file: src=$HOME/dotfiles/{{ item }} dest=$HOME/{{ item }} state=link
+  with_items:
+    - .vimrc
+  tags: vim
