@@ -1,0 +1,28 @@
+# ========================================
+# zsh
+# ========================================
+- name: install zsh
+  when: ansible_os_family == "RedHat"
+  yum: name=zsh state=latest
+  tags: zsh
+
+- name: clone zplug
+  git: repo={{ zplug_repo }} dest=$HOME/.zplug version=master
+  tags: zsh
+
+- name: change zsh
+  when: ansible_os_family == "RedHat"
+  shell: chsh -s /bin/zsh
+  tags: zsh
+
+- name: clone dotfiles
+  git: repo={{ dotfiles_repo }} dest=$HOME/dotfiles version=master
+  tags: zsh
+
+- name: make symbolic link
+  become: no
+  file: src=$HOME/dotfiles/{{ item }} dest=$HOME/{{ item }} state=link
+  with_items:
+    - .zshenv
+    - .zshrc
+  tags: zsh
