@@ -14,11 +14,11 @@
   tags: tmux
 
 - name: clone tmux
-  git: repo={{ tmux_repo }} dest={{ src_dir }} version=master
+  git: repo={{ tmux_repo }} dest={{ src_dir }}/tmux version=master
   tags: tmux
 
 - name: run autogen.sh
-  shell: chdir={{ src_dir }} sh autogen.sh
+  shell: chdir={{ src_dir }}/tmux sh autogen.sh
   tags: tmux
 
 - name: configure tmux
