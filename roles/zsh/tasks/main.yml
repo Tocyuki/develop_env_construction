@@ -10,11 +10,6 @@
   git: repo={{ zplug_repo }} dest=$HOME/.zplug version=master
   tags: zsh
 
-- name: change zsh
-  when: ansible_os_family == "RedHat"
-  shell: chsh -s /bin/zsh
-  tags: zsh
-
 - name: clone dotfiles
   git: repo={{ dotfiles_repo }} dest=$HOME/dotfiles version=master
   tags: zsh
