@@ -1,0 +1,39 @@
+# ========================================
+# tmux
+# ========================================
+- name: install tmux reqire modules
+  when: ansible_os_family == "RedHat"
+  yum: name={{ item }} state=latest
+  with_items:
+    - libevent-devel
+    - ncurses-devel
+  tags: tmux
+
+- name: ldconfig
+  command: ldconfig
+  tags: tmux
+
+- name: clone tmux
+  git: repo={{ tmux_repo }} dest={{ src_dir }} version=master
+  tags: tmux
+
+- name: run autogen.sh
+  shell: chdir={{ src_dir }} sh autogen.sh
+  tags: tmux
+
+- name: configure tmux
+  shell: chdir={{ src_dir }}/tmux ./configure
+  tags: tmux
+
+- name: make tmux
+  when: ansible_os_family == "RedHat"
+  shell: chdir={{ src_dir }}/tmux  make
+  tags: tmux
+
+- name: clone dotfiles
+  git: repo={{ dotfiles_repo }} dest=$HOME/dotfiles version=master
+  tags: tmux
+
+- name: make symbolic link
+  file: src=$HOME/dotfiles/.tmux.conf dest=$HOME/.tmux.conf state=link
+  tags: tmux

@@ -11,3 +11,4 @@ git_repo: https://git.kernel.org/pub/scm/git/git.git
 dotfiles_repo: https://github.com/Tocyuki/dotfiles.git
 vim_repo: https://github.com/vim/vim.git
 zplug_repo: https://github.com/zplug/zplug
+tmux_repo: https://github.com/tmux/tmux.git
