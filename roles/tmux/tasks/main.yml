@@ -34,6 +34,11 @@
   shell: chdir={{ src_dir }}/tmux  make
   tags: tmux
 
+- name: make install tmux
+  when: ansible_os_family == "RedHat"
+  shell: chdir={{ src_dir }}/tmux  make install
+  tags: tmux
+
 - name: clone dotfiles
   git: repo={{ dotfiles_repo }} dest=$HOME/dotfiles version=master
   tags: tmux
