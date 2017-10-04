@@ -1,0 +1,16 @@
+# ========================================
+# Golang
+# ========================================
+- name: install epel-release
+  when: ansible_os_family == "RedHat"
+  yum: name=epel-release state=latest
+  tags: ghq
+
+- name: install golang
+  when: ansible_os_family == "RedHat"
+  yum: name=golang state=latest
+  tags: ghq
+
+- name: install ghq
+  shell: go get github.com/motemen/ghq
+  tags: ghq
